@@ -189,6 +189,22 @@
       radial-gradient(circle at 82% 78%, var(--teal-dim), transparent 45%),
       linear-gradient(180deg, #0B0E14 0%, #0d1018 100%);
   }
+  .hero-slideshow{
+    position:absolute; inset:0; z-index:0;
+    overflow:hidden;
+  }
+  .hero-slide{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    opacity:0;
+    transition:opacity 1.8s ease;
+  }
+  .hero-slide.active{ opacity:1; }
+  .hero-overlay{
+    position:absolute; inset:0;
+    background:rgba(11,14,20,0.55);
+    z-index:1;
+  }
   .hero-grid{
     position:absolute; inset:0; opacity:0.5;
     background-image:
@@ -504,6 +520,24 @@
 
   <section class="hero">
     <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-slideshow" aria-hidden="true">
+      <div class="hero-slide active" style="background-image:url('2019-07-09.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2019-07-09__1_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2019-11-20.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2019-11-20__1_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2019-11-20__2_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2019-11-20__3_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2020-02-17.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2020-02-17__1_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2020-02-17__2_.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('2021-01-07.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('IMG_20210718_063009_814.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('IMG_20210718_063738_158.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('IMG_20210718_064104_634.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('IMG_20210718_143655_623.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('IMG_20210718_190912_171.jpg')"></div>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-kicker"><span class="pulse-dot"></span> Warri GRA · Open Daily Till Late</div>
       <h1>Eight Sides.<br>One Night.</h1>
@@ -817,6 +851,17 @@
 </footer>
 
 <script>
+  // ---- Hero background slideshow ----
+  const heroSlides = document.querySelectorAll('.hero-slide');
+  let slideIdx = 0;
+  if (heroSlides.length > 1) {
+    setInterval(() => {
+      heroSlides[slideIdx].classList.remove('active');
+      slideIdx = (slideIdx + 1) % heroSlides.length;
+      heroSlides[slideIdx].classList.add('active');
+    }, 5500);
+  }
+
   // ---- View routing ----
   const views = ['home','menu','gallery','contact'];
   function goTo(name){

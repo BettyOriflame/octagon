@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octagon at the Waterfront — Warri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0E14;
+    --ink-2:#12141d;
+    --panel:#161922;
+    --line: rgba(245,241,232,0.10);
+    --paper:#F5F1E8;
+    --pink:#FF2E92;
+    --pink-dim: rgba(255,46,146,0.18);
+    --amber:#FFB627;
+    --teal:#1FD6C9;
+    --teal-dim: rgba(31,214,201,0.16);
+    --maxw: 1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+    text-transform:uppercase;
+    line-height:0.95;
+    margin:0;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  /* visually hidden but accessible */
+  .vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;}
+
+  /* ---------- Octagon motif (signature element) ---------- */
+  .oct-clip{
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+  }
+  .oct-frame{
+    position:relative;
+    aspect-ratio:1/1;
+  }
+  .oct-frame::before{
+    content:"";
+    position:absolute; inset:-3px;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background: linear-gradient(135deg, var(--pink), var(--amber), var(--teal));
+    z-index:0;
+  }
+  .oct-frame > .oct-inner{
+    position:absolute; inset:3px;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background:var(--panel);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    z-index:1;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,14,20,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    font-family:'Anton', sans-serif;
+    font-size:1.05rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+  .brand .mark{
+    width:34px; height:34px;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background: linear-gradient(135deg, var(--pink), var(--amber));
+    flex-shrink:0;
+  }
+  .brand small{
+    display:block;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    text-transform:none;
+    font-weight:500;
+    letter-spacing:0;
+    font-size:0.62rem;
+    color: rgba(245,241,232,0.55);
+  }
+  nav.tabs{
+    display:flex; gap:6px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:5px;
+  }
+  nav.tabs button{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color: rgba(245,241,232,0.65);
+    background:transparent;
+    border:none;
+    border-radius:999px;
+    padding:10px 18px;
+    cursor:pointer;
+    transition: color .2s ease, background .2s ease;
+  }
+  nav.tabs button:hover{ color:var(--paper); }
+  nav.tabs button.active{
+    color:var(--ink);
+    background: linear-gradient(120deg, var(--amber), var(--pink));
+  }
+  .nav-cta{
+    display:none;
+    font-weight:800;
+    font-size:0.78rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:11px 20px;
+    border-radius:999px;
+    border:1px solid var(--teal);
+    color:var(--teal);
+    transition: background .2s ease, color .2s ease;
+  }
+  .nav-cta:hover{ background:var(--teal); color:var(--ink); }
+  @media(min-width:880px){ .nav-cta{ display:inline-block; } }
+
+  .mobile-toggle{
+    display:flex; flex-direction:column; gap:5px;
+    background:none; border:none; cursor:pointer; padding:8px;
+  }
+  .mobile-toggle span{ width:24px; height:2px; background:var(--paper); display:block; }
+  @media(min-width:720px){ .mobile-toggle{ display:none; } }
+  nav.tabs{ display:none; }
+  @media(min-width:720px){ nav.tabs{ display:flex; } }
+  nav.tabs.mobile-open{
+    display:flex; flex-direction:column;
+    position:absolute; top:76px; left:16px; right:16px;
+    border-radius:18px;
+  }
+  @media(min-width:720px){ nav.tabs.mobile-open{ position:static; left:auto; right:auto; flex-direction:row; } }
+
+  /* ---------- Views ---------- */
+  .view{ display:none; }
+  .view.active{ display:block; animation: fadeUp .5s ease both; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){
+    .view.active{ animation:none; }
+  }
+
+  section{ padding:88px 0; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-weight:700; font-size:0.74rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:8px; height:8px;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background:var(--teal);
+  }
+
+  /* ---------- HERO (Home) ---------- */
+  .hero{
+    position:relative;
+    min-height: 92vh;
+    display:flex; align-items:center;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 18% 22%, var(--pink-dim), transparent 45%),
+      radial-gradient(circle at 82% 78%, var(--teal-dim), transparent 45%),
+      linear-gradient(180deg, #0B0E14 0%, #0d1018 100%);
+  }
+  .hero-grid{
+    position:absolute; inset:0; opacity:0.5;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+  }
+  .hero .wrap{ position:relative; z-index:2; padding-top:40px; padding-bottom:40px; }
+  .hero-kicker{
+    font-weight:700; letter-spacing:0.22em; text-transform:uppercase;
+    font-size:0.78rem; color:var(--amber); margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .pulse-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--amber);
+    box-shadow:0 0 0 0 rgba(255,182,39,0.6);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,182,39,0.55);}
+    70%{ box-shadow:0 0 0 10px rgba(255,182,39,0);}
+    100%{ box-shadow:0 0 0 0 rgba(255,182,39,0);}
+  }
+  .hero h1{
+    font-size: clamp(3rem, 9vw, 6.4rem);
+    background: linear-gradient(120deg, #fff 0%, var(--paper) 35%, var(--amber) 70%, var(--pink) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-sub{
+    max-width:560px; margin-top:26px;
+    font-size:1.15rem; line-height:1.55;
+    color: rgba(245,241,232,0.78);
+  }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:38px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-weight:800; font-size:0.85rem; letter-spacing:0.03em; text-transform:uppercase;
+    padding:16px 28px; border-radius:999px; cursor:pointer; border:none;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{
+    background: linear-gradient(120deg, var(--pink), var(--amber));
+    color:var(--ink);
+    box-shadow: 0 10px 30px -8px rgba(255,46,146,0.5);
+  }
+  .btn-ghost{
+    background:transparent; border:1px solid var(--line); color:var(--paper);
+  }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); }
+
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:14px; margin-top:64px; max-width:620px;
+  }
+  .stat{
+    background:rgba(22,25,34,0.6);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 16px;
+  }
+  .stat strong{
+    display:block; font-family:'Anton',sans-serif; font-size:1.9rem;
+    background:linear-gradient(120deg, var(--teal), var(--amber));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .stat span{ font-size:0.78rem; color:rgba(245,241,232,0.6); }
+
+  /* ---------- Strip / venues ---------- */
+  .venues-strip{ background:var(--ink-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .venue-row{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+    gap:0;
+  }
+  .venue-row > div{
+    padding:26px 18px; text-align:center;
+    border-right:1px solid var(--line);
+    font-weight:700; font-size:0.82rem; letter-spacing:0.04em; text-transform:uppercase;
+    color:rgba(245,241,232,0.75);
+  }
+  .venue-row > div:last-child{ border-right:none; }
+
+  /* ---------- About / cards ---------- */
+  .section-head{ max-width:680px; margin-bottom:50px; }
+  .section-head h2{ font-size:clamp(2.2rem,5vw,3.2rem); }
+  .section-head p{ margin-top:16px; color:rgba(245,241,232,0.7); font-size:1.05rem; line-height:1.6; }
+
+  .feature-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    gap:22px;
+  }
+  .feature-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    padding:30px 26px;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .feature-card:hover{ border-color:var(--pink); transform:translateY(-4px); }
+  .feature-card .ico{
+    width:46px; height:46px; margin-bottom:18px;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background:linear-gradient(135deg, var(--pink-dim), var(--teal-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+  }
+  .feature-card h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.05rem; text-transform:none; letter-spacing:0; margin-bottom:10px; }
+  .feature-card p{ font-size:0.92rem; line-height:1.55; color:rgba(245,241,232,0.62); margin:0; }
+
+  /* ---------- Reviews marquee ---------- */
+  .reviews-band{ overflow:hidden; padding:70px 0; background:var(--ink); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .marquee-track{
+    display:flex; gap:18px; width:max-content;
+    animation: scrollX 38s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
+  .reviews-band:hover .marquee-track{ animation-play-state:paused; }
+  @keyframes scrollX{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  .review-card{
+    flex:0 0 320px;
+    background:var(--panel); border:1px solid var(--line); border-radius:18px;
+    padding:24px;
+  }
+  .review-card .stars{ color:var(--amber); letter-spacing:2px; margin-bottom:12px; font-size:0.9rem; }
+  .review-card p{ font-size:0.92rem; line-height:1.55; color:rgba(245,241,232,0.78); margin:0 0 14px; }
+  .review-card .who{ font-size:0.78rem; font-weight:700; color:rgba(245,241,232,0.5); text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* ---------- Rating block ---------- */
+  .rating-block{
+    display:flex; flex-wrap:wrap; align-items:center; gap:40px;
+    background:linear-gradient(120deg, rgba(255,46,146,0.08), rgba(31,214,201,0.08));
+    border:1px solid var(--line); border-radius:24px; padding:40px;
+  }
+  .rating-num{ font-family:'Anton',sans-serif; font-size:4rem; color:var(--amber); }
+  .rating-meta p{ margin:6px 0 0; color:rgba(245,241,232,0.65); font-size:0.95rem; }
+
+  /* ---------- Footer CTA ---------- */
+  .cta-band{
+    text-align:center; padding:100px 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255,46,146,0.14), transparent 60%);
+  }
+  .cta-band h2{ font-size:clamp(2.4rem,7vw,4.6rem); }
+  .cta-band p{ margin:20px auto 36px; max-width:480px; color:rgba(245,241,232,0.7); }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:50px 0 36px;
+    background:var(--ink-2);
+  }
+  .footer-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:32px; margin-bottom:36px;
+  }
+  .footer-grid h4{
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.78rem;
+    text-transform:uppercase; letter-spacing:0.08em; color:rgba(245,241,232,0.45);
+    margin-bottom:14px;
+  }
+  .footer-grid a, .footer-grid p{ display:block; font-size:0.92rem; color:rgba(245,241,232,0.78); margin-bottom:10px; line-height:1.5; }
+  .footer-grid a:hover{ color:var(--teal); }
+  .footer-bottom{
+    border-top:1px solid var(--line); padding-top:24px;
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
+    font-size:0.78rem; color:rgba(245,241,232,0.4);
+  }
+
+  /* ====================== MENU VIEW ====================== */
+  .menu-hero{ padding:70px 0 30px; text-align:center; }
+  .menu-hero h1{ font-size:clamp(2.6rem,7vw,4.6rem); }
+  .menu-hero p{ max-width:560px; margin:18px auto 0; color:rgba(245,241,232,0.7); }
+
+  .menu-tabs{
+    display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+    margin:40px 0 10px;
+  }
+  .menu-tabs button{
+    font-weight:700; font-size:0.8rem; letter-spacing:0.04em; text-transform:uppercase;
+    padding:10px 20px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:rgba(245,241,232,0.7); cursor:pointer;
+    transition: all .2s ease;
+  }
+  .menu-tabs button.active{ background:var(--teal); border-color:var(--teal); color:var(--ink); }
+
+  .menu-panel{ display:none; }
+  .menu-panel.active{ display:block; animation:fadeUp .4s ease both; }
+
+  .menu-list{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+  .menu-item{
+    display:flex; justify-content:space-between; gap:16px;
+    padding:22px; background:var(--panel); border:1px solid var(--line); border-radius:16px;
+  }
+  .menu-item h4{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1rem; margin:0 0 6px; }
+  .menu-item p{ margin:0; font-size:0.85rem; color:rgba(245,241,232,0.55); line-height:1.5; }
+  .menu-item .price{ font-family:'Anton',sans-serif; color:var(--amber); font-size:1.1rem; white-space:nowrap; }
+  .menu-note{
+    margin-top:30px; padding:18px 22px; border-radius:14px;
+    background:rgba(255,182,39,0.08); border:1px dashed rgba(255,182,39,0.4);
+    font-size:0.85rem; color:rgba(245,241,232,0.7);
+  }
+
+  /* ====================== GALLERY VIEW ====================== */
+  .gallery-hero{ padding:70px 0 10px; text-align:center; }
+  .gallery-hero h1{ font-size:clamp(2.6rem,7vw,4.6rem); }
+  .gallery-hero p{ max-width:560px; margin:18px auto 0; color:rgba(245,241,232,0.7); }
+
+  .gallery-grid{
+    display:grid; gap:18px;
+    grid-template-columns:repeat(4,1fr);
+  }
+  @media(max-width:880px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
+  .g-cell{
+    position:relative; border-radius:18px; overflow:hidden;
+    aspect-ratio:1/1;
+    display:flex; align-items:flex-end;
+    padding:18px;
+    font-weight:800; text-transform:uppercase; font-size:0.85rem; letter-spacing:0.03em;
+  }
+  .g-cell::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.65)); }
+  .g-cell span{ position:relative; z-index:2; }
+  .g-cell.tall{ grid-row: span 2; }
+  .g1{ background:linear-gradient(160deg,#3b0d2c,#FF2E92 120%); }
+  .g2{ background:linear-gradient(160deg,#1a3a37,#1FD6C9 130%); }
+  .g3{ background:linear-gradient(160deg,#3d2a05,#FFB627 130%); }
+  .g4{ background:linear-gradient(160deg,#1c1f2b,#5a3df0 130%); }
+  .g5{ background:linear-gradient(160deg,#231a3a,#FF2E92 60%, #1FD6C9 140%); }
+  .g6{ background:linear-gradient(160deg,#0d2a2a,#1FD6C9 140%); }
+  .g7{ background:linear-gradient(160deg,#3a1414,#FFB627 140%); }
+  .g8{ background:linear-gradient(160deg,#101522,#5a3df0 60%, #FF2E92 140%); }
+
+  .gallery-cta{ text-align:center; margin-top:50px; }
+
+  /* ====================== CONTACT VIEW ====================== */
+  .contact-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px;
+    align-items:start;
+  }
+  @media(max-width:900px){ .contact-grid{ grid-template-columns:1fr; } }
+
+  .contact-info h1{ font-size:clamp(2.4rem,6vw,3.6rem); margin-bottom:18px; }
+  .info-row{
+    display:flex; gap:16px; padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  .info-row .ico{
+    width:42px; height:42px; flex-shrink:0;
+    clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%);
+    background:linear-gradient(135deg, var(--pink-dim), var(--teal-dim));
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+  }
+  .info-row h4{ font-size:0.95rem; margin:0 0 4px; font-weight:800; }
+  .info-row p{ margin:0; font-size:0.9rem; color:rgba(245,241,232,0.62); line-height:1.5; }
+
+  .hours-table{ margin-top:10px; }
+  .hours-row{ display:flex; justify-content:space-between; padding:10px 0; font-size:0.9rem; border-bottom:1px solid var(--line); color:rgba(245,241,232,0.78); }
+  .hours-row b{ color:var(--paper); }
+
+  .contact-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:36px;
+  }
+  .contact-card h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.3rem; text-transform:none; margin-bottom:8px; }
+  .contact-card p.lead{ color:rgba(245,241,232,0.6); font-size:0.9rem; margin:0 0 26px; }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:rgba(245,241,232,0.55); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%; padding:13px 16px; border-radius:10px;
+    background:var(--ink-2); border:1px solid var(--line); color:var(--paper);
+    font-family:'Plus Jakarta Sans',sans-serif; font-size:0.92rem;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal);
+  }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:480px){ .form-row{ grid-template-columns:1fr; } }
+  .submit-note{
+    margin-top:14px; font-size:0.82rem; color:rgba(245,241,232,0.5);
+  }
+  .form-msg{ margin-top:16px; font-size:0.88rem; font-weight:700; color:var(--teal); display:none; }
+
+  .map-embed{
+    margin-top:30px; border-radius:18px; overflow:hidden; border:1px solid var(--line);
+    aspect-ratio: 16/9;
+  }
+  .map-embed iframe{ width:100%; height:100%; border:0; display:block; filter:grayscale(0.3) contrast(1.05); }
+
+  /* utility */
+  .center{ text-align:center; }
+  @media (max-width:600px){ section{ padding:64px 0; } }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="topnav">
+  <div class="wrap">
+    <a href="#" class="brand" data-go="home">
+      <span class="mark" aria-hidden="true"></span>
+      Octagon <small>At The Waterfront · Warri</small>
+    </a>
+    <nav class="tabs" id="tabs">
+      <button data-go="home" class="active">Home</button>
+      <button data-go="menu">Menu</button>
+      <button data-go="gallery">Gallery</button>
+      <button data-go="contact">Contact</button>
+    </nav>
+    <a href="tel:+2349015430057" class="nav-cta">Call to Reserve</a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<main id="view-home" class="view active">
+
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-kicker"><span class="pulse-dot"></span> Warri GRA · Open Daily Till Late</div>
+      <h1>Eight Sides.<br>One Night.</h1>
+      <p class="hero-sub">A waterfront entertainment compound in Warri GRA — eatery, lounge, VIP suite, open-air bar, bakery and nightclub built around the creek view. Come for the shawarma, stay till the DJ closes the night out.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-go="menu">See the Menu</button>
+        <button class="btn btn-ghost" data-go="contact">Book a Table</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>4.2★</strong><span>From 69 guest reviews</span></div>
+        <div class="stat"><strong>6</strong><span>Venues under one roof</span></div>
+        <div class="stat"><strong>7</strong><span>Days a week, open-air & indoor</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="venues-strip">
+    <div class="wrap venue-row">
+      <div>Eatery</div>
+      <div>VIP Lounge</div>
+      <div>Open-Air Bar</div>
+      <div>Nightclub</div>
+      <div>Bakery</div>
+      <div>Event Centre</div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The Spot</div>
+        <h2>Warri's waterfront, reimagined as a night out.</h2>
+        <p>Octagon sits on the creek in Warri GRA, built as one compound with several rooms to move through in a single evening — quiet sit-out by the water, a cooled lounge, an indoor games room, and a club floor that wakes up after dark. Guests come back for the scenery as much as the menu.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🌊</div>
+          <h3>Creek-Side Sit-Out</h3>
+          <p>Open-air seating with a direct sea/creek view — the most-mentioned reason guests say they keep returning.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🍽️</div>
+          <h3>Eatery & Bakery</h3>
+          <p>A full kitchen known for its shawarma and fish dishes, plus an on-site bakery guests describe as smelling as good as it tastes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🥂</div>
+          <h3>VIP Lounge</h3>
+          <p>An air-conditioned lounge and VIP section for guests who want the night a little more private, a little more cooled-down.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🎮</div>
+          <h3>Indoor Games Room</h3>
+          <p>Pool table and indoor games for the hours between sundown and the club floor filling up.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🎶</div>
+          <h3>Octagon Nightclub</h3>
+          <p>The compound's late-night room — sound, lights and a dance floor once the eatery crowd thins out.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico" aria-hidden="true">🏛️</div>
+          <h3>Event Centre</h3>
+          <p>A multipurpose hall on-site for private parties, hangouts and functions, wheelchair-accessible from the entrance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-band">
+    <div class="wrap" style="margin-bottom:36px;">
+      <div class="eyebrow">In Guests' Words</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);">What 69 reviewers are saying</h2>
+    </div>
+    <div class="marquee-track">
+      <div class="review-card"><div class="stars">★★★★★</div><p>"Their Shawarma is finger licking good, I highly recommend." The serenity and tranquility of the spot is divine.</p><div class="who">— Local Guide</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Loved the afrocentric paintings, the food, the service and the whole setup. 100% recommended.</p><div class="who">— Verified Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Beautiful water front view with a lounge, VIP lounge, and an open-air bar / relaxation centre.</p><div class="who">— Returning Guest</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Calm, exclusive and serene — the food is nice and the staff are nice too. Great service all round.</p><div class="who">— Weekend Regular</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>An entertainment centre with a sea-side view, indoor games room, VIP lounge, eatery and nite-club — all in one.</p><div class="who">— First-Time Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Ambiance looks expensive, but it's pocket friendly. A cozy place to relax with friends.</p><div class="who">— Local Guide</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Nice joint with good sea-food creek view, good location and visible security on the grounds.</p><div class="who">— Verified Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>A bakery with a super nice aroma — the taste is even better than the smell promises.</p><div class="who">— Weekend Regular</div></div>
+      <!-- duplicate set for seamless loop -->
+      <div class="review-card"><div class="stars">★★★★★</div><p>"Their Shawarma is finger licking good, I highly recommend." The serenity and tranquility of the spot is divine.</p><div class="who">— Local Guide</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Loved the afrocentric paintings, the food, the service and the whole setup. 100% recommended.</p><div class="who">— Verified Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Beautiful water front view with a lounge, VIP lounge, and an open-air bar / relaxation centre.</p><div class="who">— Returning Guest</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Calm, exclusive and serene — the food is nice and the staff are nice too. Great service all round.</p><div class="who">— Weekend Regular</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>An entertainment centre with a sea-side view, indoor games room, VIP lounge, eatery and nite-club — all in one.</p><div class="who">— First-Time Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Ambiance looks expensive, but it's pocket friendly. A cozy place to relax with friends.</p><div class="who">— Local Guide</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Nice joint with good sea-food creek view, good location and visible security on the grounds.</p><div class="who">— Verified Visitor</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>A bakery with a super nice aroma — the taste is even better than the smell promises.</p><div class="who">— Weekend Regular</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="rating-block">
+        <div class="rating-num">4.2</div>
+        <div class="rating-meta">
+          <strong style="font-size:1.1rem;">Out of 5 — based on 69 reviews</strong>
+          <p>Guests consistently call out the waterfront scenery, the shawarma and fish dishes, and the lounge's exclusivity. Some note service can be slow on busy nights — something the team is actively working on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Pull Up<br>This Weekend.</h2>
+      <p>Eatery opens early. The club wakes up after dark. Either way, the waterfront's waiting.</p>
+      <button class="btn btn-primary" data-go="contact">Reserve a Table</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ MENU ============ -->
+<main id="view-menu" class="view">
+  <section class="menu-hero">
+    <div class="wrap">
+      <div class="eyebrow center" style="justify-content:center;">The Menu</div>
+      <h1>Eatery, Bar<br>& Bakery.</h1>
+      <p class="center" style="margin-left:auto; margin-right:auto;">A demo spread inspired by guest-favourite dishes mentioned in reviews. Final pricing and dishes to be confirmed with the kitchen.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="menu-tabs" id="menuTabs">
+        <button data-menu="signature" class="active">Signature</button>
+        <button data-menu="mains">Mains & Seafood</button>
+        <button data-menu="bakery">Bakery</button>
+        <button data-menu="drinks">Bar & Cocktails</button>
+      </div>
+
+      <div class="menu-panel active" id="menu-signature">
+        <div class="menu-list">
+          <div class="menu-item"><div><h4>Octagon Shawarma</h4><p>The dish guests talk about most — grilled, wrapped, finger-licking good.</p></div><div class="price">₦3,500</div></div>
+          <div class="menu-item"><div><h4>Waterfront Grilled Fish</h4><p>Whole grilled fish, guest-favourite seafood with a creek-side view to match.</p></div><div class="price">₦8,000</div></div>
+          <div class="menu-item"><div><h4>Suya Platter</h4><p>Spiced grilled beef skewers, sliced onion, ground pepper mix.</p></div><div class="price">₦4,500</div></div>
+          <div class="menu-item"><div><h4>Octagon Small Chops</h4><p>Mixed bites — spring rolls, puff-puff, gizzard skewers — built for sharing.</p></div><div class="price">₦6,000</div></div>
+        </div>
+      </div>
+
+      <div class="menu-panel" id="menu-mains">
+        <div class="menu-list">
+          <div class="menu-item"><div><h4>Jollof Rice & Grilled Chicken</h4><p>Classic party jollof, smoky base, grilled chicken thigh.</p></div><div class="price">₦4,000</div></div>
+          <div class="menu-item"><div><h4>Native Rice & Fish</h4><p>Palm oil native rice with a side of fried or grilled fish.</p></div><div class="price">₦4,200</div></div>
+          <div class="menu-item"><div><h4>Pepper Soup (Catfish or Goat)</h4><p>Peppery, brothy, served hot — a lounge favourite after dark.</p></div><div class="price">₦5,500</div></div>
+          <div class="menu-item"><div><h4>Seafood Okro Special</h4><p>Okro stew loaded with prawns, fish and assorted seafood.</p></div><div class="price">₦7,000</div></div>
+        </div>
+      </div>
+
+      <div class="menu-panel" id="menu-bakery">
+        <div class="menu-list">
+          <div class="menu-item"><div><h4>Fresh-Baked Meat Pie</h4><p>From the on-site bakery guests say smells as good as it tastes.</p></div><div class="price">₦800</div></div>
+          <div class="menu-item"><div><h4>Sausage Roll</h4><p>Warm, flaky, baked fresh through service hours.</p></div><div class="price">₦700</div></div>
+          <div class="menu-item"><div><h4>Chicken & Mushroom Pie</h4><p>House bakery special, baked in small batches.</p></div><div class="price">₦900</div></div>
+          <div class="menu-item"><div><h4>Doughnuts (3-pack)</h4><p>Soft, sugar-dusted, made fresh daily.</p></div><div class="price">₦1,000</div></div>
+        </div>
+      </div>
+
+      <div class="menu-panel" id="menu-drinks">
+        <div class="menu-list">
+          <div class="menu-item"><div><h4>Octagon Sunset</h4><p>The house cocktail — built to match the waterfront view at golden hour.</p></div><div class="price">₦6,000</div></div>
+          <div class="menu-item"><div><h4>Chapman</h4><p>The Nigerian classic — fruity, fizzy, served chilled.</p></div><div class="price">₦4,000</div></div>
+          <div class="menu-item"><div><h4>Draft Beer</h4><p>Ice-cold, on tap at the open-air bar.</p></div><div class="price">₦2,000</div></div>
+          <div class="menu-item"><div><h4>Bottle Service (Champagne)</h4><p>Table-side bottle service for the VIP lounge and club floor.</p></div><div class="price">From ₦80,000</div></div>
+        </div>
+      </div>
+
+      <div class="menu-note">Sample menu for demo purposes — built from guest reviews mentioning shawarma, fish, small chops and the on-site bakery. Replace with the live kitchen menu and confirmed prices before launch.</div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ GALLERY ============ -->
+<main id="view-gallery" class="view">
+  <section class="gallery-hero">
+    <div class="wrap">
+      <div class="eyebrow center" style="justify-content:center;">The Compound</div>
+      <h1>Six Rooms.<br>One Waterfront.</h1>
+      <p class="center" style="margin-left:auto; margin-right:auto;">A look at the spaces guests move through across a night at Octagon — placeholder tiles standing in for real photography.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="gallery-grid">
+        <div class="g-cell g1 tall"><span>Creek-Side Sit-Out</span></div>
+        <div class="g-cell g2"><span>VIP Lounge</span></div>
+        <div class="g-cell g3"><span>Open-Air Bar</span></div>
+        <div class="g-cell g4 tall"><span>Nightclub Floor</span></div>
+        <div class="g-cell g5"><span>Bakery Counter</span></div>
+        <div class="g-cell g6"><span>Indoor Games Room</span></div>
+        <div class="g-cell g7"><span>Event Hall</span></div>
+        <div class="g-cell g8"><span>Eatery & Grill</span></div>
+      </div>
+      <div class="gallery-cta">
+        <p style="color:rgba(245,241,232,0.55); margin-bottom:18px; font-size:0.9rem;">Swap these tiles with real photography from the venue before going live.</p>
+        <button class="btn btn-ghost" data-go="contact">Plan a Visit</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ CONTACT ============ -->
+<main id="view-contact" class="view">
+  <section style="padding-top:70px;">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="eyebrow">Get In Touch</div>
+          <h1>Find Us On<br>The Water.</h1>
+
+          <div class="info-row">
+            <div class="ico" aria-hidden="true">📍</div>
+            <div><h4>Address</h4><p>High Court Road, Warri GRA, 332104, Warri, Delta State, Nigeria</p></div>
+          </div>
+          <div class="info-row">
+            <div class="ico" aria-hidden="true">📞</div>
+            <div><h4>Phone</h4><p><a href="tel:+2349015430057">+234 901 543 0057</a></p></div>
+          </div>
+          <div class="info-row">
+            <div class="ico" aria-hidden="true">♿</div>
+            <div><h4>Accessibility</h4><p>Wheelchair-accessible entrance on site.</p></div>
+          </div>
+          <div class="info-row">
+            <div class="ico" aria-hidden="true">🚗</div>
+            <div><h4>Service Options</h4><p>Dine-in, takeaway and delivery all available. Good for groups and good for kids by day.</p></div>
+          </div>
+
+          <div class="hours-table">
+            <h4 style="text-transform:uppercase; font-size:0.78rem; letter-spacing:0.08em; color:rgba(245,241,232,0.45); margin:30px 0 6px;">Suggested Hours <span style="font-weight:400; text-transform:none;">(confirm with venue)</span></h4>
+            <div class="hours-row"><span>Mon – Thu</span><b>11:00 AM – 12:00 AM</b></div>
+            <div class="hours-row"><span>Fri – Sat</span><b>11:00 AM – 3:00 AM</b></div>
+            <div class="hours-row"><span>Sunday</span><b>12:00 PM – 12:00 AM</b></div>
+          </div>
+
+          <div class="map-embed">
+            <iframe loading="lazy" src="https://www.google.com/maps?q=High+Court+Road,+Warri+GRA,+Warri,+Delta+State,+Nigeria&output=embed" title="Map showing High Court Road, Warri GRA, Warri, Delta State"></iframe>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3>Reserve a Table</h3>
+          <p class="lead">Demo form — wire this up to email, WhatsApp or a booking system before launch.</p>
+          <form id="bookingForm">
+            <div class="form-row">
+              <div class="field"><label for="name">Full name</label><input id="name" type="text" placeholder="Your name" required></div>
+              <div class="field"><label for="phone">Phone number</label><input id="phone" type="tel" placeholder="080..." required></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label for="date">Date</label><input id="date" type="date" required></div>
+              <div class="field"><label for="guests">Guests</label>
+                <select id="guests">
+                  <option>1–2</option><option>3–5</option><option>6–10</option><option>10+ (Event Hall)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label for="area">Preferred area</label>
+              <select id="area">
+                <option>Open-Air Sit-Out</option>
+                <option>VIP Lounge</option>
+                <option>Eatery</option>
+                <option>Nightclub / Bottle Service</option>
+                <option>Event Centre</option>
+              </select>
+            </div>
+            <div class="field"><label for="notes">Notes</label><textarea id="notes" placeholder="Anything we should know?"></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Request Reservation</button>
+            <p class="submit-note">This demo doesn't send real messages yet — connect it to your phone line or WhatsApp for launch.</p>
+            <p class="form-msg" id="formMsg">Thanks — your request has been noted for this demo.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Octagon</h4>
+        <p>A waterfront entertainment compound in Warri GRA — eatery, bakery, lounge, VIP suite, games room and nightclub.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <p>High Court Road, Warri GRA<br>332104, Warri, Delta State</p>
+        <a href="tel:+2349015430057">+234 901 543 0057</a>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="#" data-go="menu">Menu</a>
+        <a href="#" data-go="gallery">Gallery</a>
+        <a href="#" data-go="contact">Contact &amp; Booking</a>
+      </div>
+      <div>
+        <h4>Note</h4>
+        <p>This is a demo site built from public directory listings and guest reviews — to be finalised with the venue's own copy, menu and photography.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Octagon at the Waterfront — Demo Build</span>
+      <span>Designed for pitch purposes</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- View routing ----
+  const views = ['home','menu','gallery','contact'];
+  function goTo(name){
+    views.forEach(v=>{
+      document.getElementById('view-'+v).classList.toggle('active', v===name);
+    });
+    document.querySelectorAll('#tabs button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.go===name);
+    });
+    document.getElementById('tabs').classList.remove('mobile-open');
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  }
+  document.querySelectorAll('[data-go]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      goTo(el.dataset.go);
+    });
+  });
+
+  // ---- Mobile nav toggle ----
+  const toggle = document.getElementById('mobileToggle');
+  const tabs = document.getElementById('tabs');
+  toggle.addEventListener('click', ()=>{
+    const open = tabs.classList.toggle('mobile-open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  // ---- Menu sub-tabs ----
+  document.querySelectorAll('#menuTabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#menuTabs button').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('menu-'+btn.dataset.menu).classList.add('active');
+    });
+  });
+
+  // ---- Demo booking form ----
+  document.getElementById('bookingForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    document.getElementById('formMsg').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
